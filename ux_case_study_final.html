@@ -1,0 +1,1088 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UX Case Study — Public Transport Navigator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;1,400&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --teal: #5DCAA5; --tl: #E1F5EE; --tm: #1D9E75; --td: #0F6E56; --tb: #9FE1CB;
+      --amber: #EF9F27; --al: #FAEEDA; --ad: #854F0B;
+      --rl: #FCEBEB; --rd: #A32D2D; --rb: #F7C1C1;
+      --bg: #FAFAF9; --sf: #F3F2EF; --card: #FFFFFF;
+      --t1: #1C1C1A; --t2: #4A4A47; --t3: #8A8A86;
+      --b: rgba(0,0,0,0.09); --bm: rgba(0,0,0,0.14);
+      --rsm: 8px; --rmd: 12px; --rlg: 16px;
+    }
+
+    body { background: var(--bg); color: var(--t1); font-family: 'Outfit', sans-serif; font-weight: 300; line-height: 1.75; -webkit-font-smoothing: antialiased; }
+
+    .cs { max-width: 840px; margin: 0 auto; padding: 4rem 2rem 7rem; }
+
+    .eyebrow { font-size: 10px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; color: var(--td); margin-bottom: .55rem; display: flex; align-items: center; gap: 8px; }
+    .eyebrow::after { content: ''; width: 24px; height: 1px; background: var(--teal); }
+
+    h1 { font-family: 'Lora', serif; font-size: clamp(1.9rem, 4.5vw, 2.85rem); font-weight: 400; line-height: 1.2; letter-spacing: -.015em; margin-bottom: .85rem; }
+    h2 { font-family: 'Lora', serif; font-size: 1.25rem; font-weight: 400; line-height: 1.35; margin-bottom: .85rem; }
+    .body-text { font-size: 14px; font-weight: 300; color: var(--t2); line-height: 1.8; max-width: 600px; }
+
+    .sec { margin-bottom: 3.5rem; padding-bottom: 3rem; border-bottom: .5px solid var(--b); }
+    .sec:last-of-type { border-bottom: none; }
+
+    /* ── HERO ── */
+    .hero { padding-bottom: 3.5rem; margin-bottom: 3.5rem; border-bottom: .5px solid var(--b); }
+    .hero-sub { font-size: 15px; font-weight: 300; color: var(--t2); max-width: 520px; margin-bottom: 1.75rem; line-height: 1.7; }
+    .meta-row { display: flex; flex-wrap: wrap; gap: 2.5rem; }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .ml { font-size: 10px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: var(--t3); }
+    .mv { font-size: 13px; font-weight: 400; color: var(--t2); }
+
+    /* ── HERO VISUAL ── */
+    .hero-visual { margin-top: 2rem; border-radius: var(--rlg); overflow: hidden; border: .5px solid var(--b); background: var(--sf); }
+
+    /* ── SNAP GRID ── */
+    .snap-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 1px; border: .5px solid var(--b); border-radius: var(--rmd); overflow: hidden; margin-top: 1rem; background: var(--b); }
+    .sc { background: var(--sf); padding: 1.1rem 1rem; }
+    .sl { font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 5px; }
+    .sv { font-size: 13px; font-weight: 400; color: var(--t1); line-height: 1.4; }
+
+    /* ── HMW ── */
+    .hmw { margin-top: 1rem; padding: 1.6rem 1.85rem; border-left: 2px solid var(--teal); background: var(--tl); border-radius: 0 var(--rsm) var(--rsm) 0; }
+    .hmw p { font-family: 'Lora', serif; font-size: 1.1rem; font-style: italic; line-height: 1.55; color: var(--td); }
+
+    /* ── PAIN GRID ── */
+    .pain-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 1.25rem; }
+    .pc { background: var(--sf); border-radius: var(--rsm); border: .5px solid var(--b); padding: .8rem .9rem; font-size: 13px; font-weight: 300; color: var(--t2); display: flex; align-items: flex-start; gap: 9px; line-height: 1.55; }
+    .pt { width: 15px; height: 15px; min-width: 15px; border-radius: 50%; background: var(--tl); border: 1px solid var(--tb); display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+    .pt::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--teal); }
+
+    /* ── USER QUOTE ── */
+    .uq { margin-top: 1.25rem; padding: .9rem 1.1rem; border-left: 2px solid var(--b); background: var(--sf); border-radius: 0 var(--rsm) var(--rsm) 0; }
+    .uq p { font-family: 'Lora', serif; font-style: italic; font-size: .9rem; color: var(--t2); line-height: 1.6; }
+    .uq .attr { font-family: 'Outfit', sans-serif; font-style: normal; font-size: 11px; color: var(--t3); margin-top: 5px; }
+
+    /* ── INSIGHT LIST ── */
+    .il { list-style: none; margin-top: 1.1rem; }
+    .ii { display: flex; align-items: flex-start; gap: 12px; font-size: 14px; font-weight: 300; color: var(--t2); padding: .8rem 0; border-bottom: .5px solid var(--b); }
+    .ii:last-child { border-bottom: none; }
+    .in { font-size: 10px; font-weight: 500; color: var(--td); min-width: 26px; letter-spacing: .05em; padding-top: 3px; flex-shrink: 0; }
+
+    /* ── DEFINE ── */
+    .def { margin-top: 1rem; text-align: center; padding: 2.25rem 1.75rem; background: var(--sf); border-radius: var(--rlg); border: .5px solid var(--b); }
+    .def p { font-family: 'Lora', serif; font-size: 1.2rem; font-weight: 400; line-height: 1.55; }
+    .def span { color: var(--td); }
+
+    /* ── PILLARS ── */
+    .pg { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-top: 1.1rem; }
+    .pcard { padding: 1.1rem .9rem; border-radius: var(--rmd); background: var(--sf); border: .5px solid var(--b); }
+    .pico { width: 26px; height: 26px; border-radius: 7px; background: var(--tl); margin-bottom: 9px; display: flex; align-items: center; justify-content: center; }
+    .pico svg { width: 13px; height: 13px; }
+    .pn { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+    .pd { font-size: 12px; font-weight: 300; color: var(--t2); line-height: 1.55; }
+
+    /* ── DIAGRAM CONTAINERS ── */
+    .diagram-wrap { margin-top: 1.75rem; border: .5px solid var(--b); border-radius: var(--rlg); overflow: hidden; background: var(--card); }
+    .diagram-header { padding: .75rem 1.25rem; background: var(--sf); border-bottom: .5px solid var(--b); font-size: 11px; font-weight: 500; color: var(--t3); letter-spacing: .06em; text-transform: uppercase; }
+    .diagram-body { padding: 1.5rem; }
+    .diagram-caption { padding: .65rem 1.25rem; background: var(--sf); border-top: .5px solid var(--b); font-size: 12px; font-weight: 300; color: var(--t3); font-style: italic; }
+
+    /* ── STRATEGY FLOW ── */
+    .strategy-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+    .strategy-flow::before { content: ''; position: absolute; top: 38px; left: calc(12.5% + 16px); right: calc(12.5% + 16px); height: 1px; background: var(--tb); z-index: 0; }
+    .sf-col { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 0 .5rem; position: relative; z-index: 1; }
+    .sf-node { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 500; margin-bottom: .85rem; border: 1.5px solid; flex-shrink: 0; }
+    .sf-node.n1 { background: var(--tl); border-color: var(--tb); color: var(--td); }
+    .sf-node.n2 { background: var(--tl); border-color: var(--tb); color: var(--td); }
+    .sf-node.n3 { background: var(--tl); border-color: var(--tb); color: var(--td); }
+    .sf-node.n4 { background: var(--al); border-color: #FAC775; color: var(--ad); }
+    .sf-stage { font-size: 11px; font-weight: 500; color: var(--t1); margin-bottom: 4px; letter-spacing: .02em; }
+    .sf-thought { font-size: 11px; font-style: italic; font-family: 'Lora', serif; color: var(--t2); margin-bottom: 8px; line-height: 1.4; }
+    .sf-prob { font-size: 11px; font-weight: 300; color: var(--t3); margin-bottom: 8px; line-height: 1.4; }
+    .sf-fix { font-size: 11px; font-weight: 400; color: var(--td); background: var(--tl); border: .5px solid var(--tb); border-radius: 6px; padding: 5px 8px; line-height: 1.4; }
+
+    /* ── JOURNEY MAP TABLE ── */
+    .journey-table { width: 100%; border-collapse: collapse; margin-top: .25rem; }
+    .journey-table th { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .09em; color: var(--t3); padding: 0 .75rem .65rem; text-align: left; border-bottom: .5px solid var(--b); }
+    .journey-table td { padding: .75rem; border-bottom: .5px solid var(--b); vertical-align: top; }
+    .journey-table tr:last-child td { border-bottom: none; }
+    .jt-stage { font-size: 12px; font-weight: 500; color: var(--t1); }
+    .jt-sub { font-size: 11px; font-weight: 300; color: var(--t3); margin-top: 2px; }
+    .jt-thought { font-size: 12px; font-style: italic; font-family: 'Lora', serif; color: var(--t2); line-height: 1.45; }
+    .jt-pain { font-size: 12px; font-weight: 300; color: var(--rd); }
+    .jt-fix { font-size: 12px; font-weight: 400; color: var(--td); }
+
+    /* ── WIREFRAME GRID ── */
+    .wf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .wf-card { border: .5px solid var(--b); border-radius: var(--rmd); overflow: hidden; background: var(--card); }
+    .wf-screen { background: var(--sf); padding: 1rem; position: relative; height: 220px; display: flex; flex-direction: column; gap: 8px; }
+    .wf-label { position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; color: var(--t3); background: var(--card); border: .5px solid var(--b); border-radius: 999px; padding: 2px 8px; }
+    .wf-footer { padding: .65rem .85rem; border-top: .5px solid var(--b); }
+    .wf-annot { font-size: 11px; font-weight: 300; color: var(--t3); line-height: 1.5; }
+    .wf-annot span { color: var(--td); font-weight: 400; }
+
+    /* wireframe mock elements */
+    .wf-bar { height: 8px; border-radius: 4px; background: var(--b); }
+    .wf-bar.teal { background: var(--teal); opacity: .6; }
+    .wf-bar.sm { width: 40%; }
+    .wf-bar.md { width: 65%; }
+    .wf-bar.lg { width: 90%; }
+    .wf-bar.xl { width: 100%; }
+    .wf-block { border-radius: 6px; background: var(--bm); }
+    .wf-block.highlight { background: var(--teal); opacity: .25; }
+    .wf-row { display: flex; gap: 6px; align-items: center; }
+    .wf-dot { width: 20px; height: 20px; min-width: 20px; border-radius: 50%; background: var(--teal); opacity: .35; }
+    .wf-dot.amber { background: var(--amber); }
+    .wf-map { background: #E8F4F0; border-radius: 8px; flex: 1; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .wf-map-line { position: absolute; width: 60%; height: 2px; background: var(--teal); opacity: .5; transform: rotate(-15deg); }
+    .wf-map-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--teal); border: 2px solid white; position: absolute; }
+    .wf-map-dot.user { background: var(--td); left: 35%; top: 45%; }
+    .wf-map-dot.bus { background: var(--amber); right: 35%; bottom: 40%; }
+    .wf-pin { font-size: 16px; }
+    .wf-banner { background: var(--tl); border-radius: 6px; padding: 7px 10px; display: flex; align-items: center; gap: 7px; }
+    .wf-banner-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--teal); flex-shrink: 0; }
+    .wf-banner-text { font-size: 11px; font-weight: 400; color: var(--td); }
+    .wf-progress { height: 3px; background: var(--b); border-radius: 999px; overflow: hidden; }
+    .wf-progress-fill { height: 100%; background: var(--teal); border-radius: 999px; }
+
+    /* ── TESTING ── */
+    .tg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.1rem; }
+    .tc { border-radius: var(--rsm); background: var(--sf); padding: .9rem; border: .5px solid var(--b); }
+    .tl-label { font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; color: var(--t3); margin-bottom: 9px; }
+    .ti { font-size: 13px; font-weight: 300; color: var(--t2); padding: 5px 0; border-bottom: .5px solid var(--b); display: flex; align-items: center; gap: 7px; }
+    .ti:last-child { border-bottom: none; }
+    .td2 { width: 5px; height: 5px; min-width: 5px; border-radius: 50%; background: var(--t3); }
+    .td2.g { background: var(--teal); }
+
+    /* ── RESULTS BLOCK ── */
+    .results-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-top: 1.1rem; }
+    .result-card { background: var(--tl); border: .5px solid var(--tb); border-radius: var(--rmd); padding: 1rem 1.1rem; }
+    .result-num { font-family: 'Lora', serif; font-size: 1.6rem; font-weight: 400; color: var(--td); margin-bottom: 3px; line-height: 1; }
+    .result-label { font-size: 12px; font-weight: 300; color: var(--tm); line-height: 1.45; }
+
+    /* ── ITERATION ── */
+    .iter-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--b); border-radius: var(--rmd); overflow: hidden; margin-top: .25rem; }
+    .iter-col { background: var(--card); padding: 1rem; }
+    .iter-col.final { background: var(--tl); }
+    .iter-badge { display: inline-block; font-size: 10px; font-weight: 500; letter-spacing: .07em; text-transform: uppercase; padding: 3px 9px; border-radius: 999px; border: .5px solid; margin-bottom: 10px; }
+    .iter-badge.v1 { color: var(--t3); background: var(--sf); border-color: var(--bm); }
+    .iter-badge.v2 { color: var(--ad); background: var(--al); border-color: #FAC775; }
+    .iter-badge.vf { color: var(--td); background: var(--tl); border-color: var(--tb); }
+    .iter-item { font-size: 12px; font-weight: 300; color: var(--t2); padding: 5px 0; border-bottom: .5px solid var(--b); display: flex; align-items: flex-start; gap: 7px; line-height: 1.45; }
+    .iter-item:last-child { border-bottom: none; }
+    .iter-dot { width: 5px; height: 5px; min-width: 5px; border-radius: 50%; margin-top: 6px; flex-shrink: 0; }
+    .iter-dot.red { background: #E24B4A; }
+    .iter-dot.amber { background: var(--amber); }
+    .iter-dot.green { background: var(--teal); }
+
+    /* ── SPF (Problem → Screen → Fix) ── */
+    .spf { border: .5px solid var(--b); border-radius: var(--rlg); overflow: hidden; margin-top: 1.25rem; }
+    .spf-h { background: var(--sf); padding: .8rem 1.1rem; border-bottom: .5px solid var(--b); display: flex; align-items: center; gap: 9px; }
+    .spf-tag { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; background: var(--tl); color: var(--td); border: .5px solid var(--tb); padding: 3px 9px; border-radius: 999px; }
+    .spf-name { font-size: 13px; font-weight: 400; }
+    .spf-body { padding: 1.1rem; }
+    .spf-row { display: grid; grid-template-columns: 95px 1fr; gap: 0; padding: .7rem 0; border-bottom: .5px solid var(--b); }
+    .spf-row:last-child { border-bottom: none; padding-bottom: 0; }
+    .spf-k { font-size: 10px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--t3); padding-top: 2px; }
+    .spf-v { font-size: 13px; font-weight: 300; color: var(--t2); line-height: 1.65; }
+    .spf-v strong { font-weight: 500; color: var(--t1); }
+    .spf-v.fix { color: var(--td); }
+    .spf-v.res { color: var(--tm); font-weight: 400; }
+
+    /* ── EDGE CASES ── */
+    .eg { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 1.1rem; }
+    .ecard { border-radius: var(--rmd); border: .5px solid var(--b); background: var(--card); padding: 1.1rem; }
+    .etitle { font-size: 13px; font-weight: 500; margin-bottom: 4px; display: flex; align-items: center; gap: 7px; }
+    .edot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+    .edot.am { background: var(--amber); } .edot.r { background: #E24B4A; } .edot.n { background: var(--t3); }
+    .estate { font-size: 11px; font-weight: 400; padding: 3px 9px; border-radius: 999px; display: inline-block; margin-bottom: 7px; border: .5px solid; }
+    .estate.am { color: var(--ad); background: var(--al); border-color: #FAC775; }
+    .estate.r { color: var(--rd); background: var(--rl); border-color: var(--rb); }
+    .estate.n { color: var(--t3); background: var(--sf); border-color: var(--bm); }
+    .edesc { font-size: 12px; font-weight: 300; color: var(--t2); line-height: 1.6; }
+    .efix { font-size: 12px; font-weight: 400; color: var(--td); margin-top: 5px; }
+
+    /* ── BILINGUAL ── */
+    .bil { margin-top: 1.1rem; border: .5px solid var(--b); border-radius: var(--rmd); overflow: hidden; }
+    .bil-row { display: grid; grid-template-columns: 1fr 1fr; border-bottom: .5px solid var(--b); }
+    .bil-row:last-child { border-bottom: none; }
+    .bil-cell { padding: .7rem .9rem; font-size: 13px; font-weight: 300; color: var(--t2); }
+    .bil-cell:first-child { border-right: .5px solid var(--b); }
+    .bil-tag { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .08em; color: var(--t3); margin-bottom: 2px; }
+    .bil-line { font-size: 14px; color: var(--t1); }
+
+    /* ── MICROCOPY ── */
+    .mc-table { width: 100%; margin-top: 1.1rem; border-collapse: collapse; }
+    .mc-table th { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .09em; color: var(--t3); padding: 0 0 .6rem; text-align: left; border-bottom: .5px solid var(--b); }
+    .mc-table td { font-size: 13px; font-weight: 300; padding: .7rem 0; border-bottom: .5px solid var(--b); vertical-align: top; }
+    .mc-table tr:last-child td { border-bottom: none; }
+    .mc-table td:first-child { color: var(--t3); padding-right: 1.25rem; font-style: italic; }
+    .mc-table td:last-child { color: var(--td); font-weight: 400; }
+
+    /* ── JOURNEY BEFORE/AFTER ── */
+    .jw { display: grid; grid-template-columns: 1fr 36px 1fr; gap: 10px; align-items: start; margin-top: 1.1rem; }
+    .jcol { display: flex; flex-direction: column; gap: 6px; }
+    .jlab { font-size: 10px; font-weight: 500; letter-spacing: .1em; text-transform: uppercase; margin-bottom: 3px; }
+    .jlab.b { color: var(--t3); } .jlab.a { color: var(--td); }
+    .ji { font-size: 13px; font-weight: 300; padding: 8px 10px; border-radius: 7px; color: var(--t2); background: var(--sf); border: .5px solid var(--b); }
+    .ji.pos { background: var(--tl); border-color: var(--tb); color: var(--td); }
+    .jarr { display: flex; align-items: center; justify-content: center; padding-top: 1.4rem; color: var(--t3); font-size: 14px; }
+
+    /* ── IMPACT ── */
+    .ig { display: grid; grid-template-columns: 1fr 36px 1fr; gap: 0; margin-top: 1.1rem; align-items: start; }
+    .ic { display: flex; flex-direction: column; gap: 6px; }
+    .iitem { font-size: 13px; font-weight: 300; padding: 8px 10px; border-radius: 7px; border: .5px solid var(--b); color: var(--t2); background: var(--sf); }
+    .iitem.pos { background: var(--tl); border-color: var(--tb); color: var(--td); }
+    .iarr { display: flex; align-items: center; justify-content: center; padding-top: .5rem; color: var(--t3); font-size: 14px; }
+
+    /* ── LEARNINGS ── */
+    .ll { display: flex; flex-direction: column; gap: 10px; margin-top: 1.1rem; }
+    .li { font-family: 'Lora', serif; font-style: italic; font-size: .95rem; font-weight: 400; color: var(--t1); padding: .9rem 1.1rem; border-left: 1.5px solid var(--teal); background: var(--sf); border-radius: 0 8px 8px 0; line-height: 1.55; }
+
+    /* ── CHIPS ── */
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1.1rem; }
+    .chip { font-size: 12px; font-weight: 400; padding: 5px 11px; border-radius: 999px; border: .5px solid; line-height: 1.3; }
+    .chip.g { background: var(--tl); color: var(--td); border-color: var(--tb); }
+    .chip.am { background: var(--al); color: var(--ad); border-color: #FAC775; }
+    .chip.r { background: var(--rl); color: var(--rd); border-color: var(--rb); }
+    .chip.n { background: var(--sf); color: var(--t2); border-color: var(--bm); }
+
+    /* ── FOOTER ── */
+    .foot { text-align: center; padding-top: 2.5rem; border-top: .5px solid var(--b); font-size: 13px; font-weight: 300; color: var(--t3); }
+    .foot strong { color: var(--td); font-weight: 500; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 620px) {
+      .cs { padding: 2rem 1.25rem 4rem; }
+      .snap-grid { grid-template-columns: 1fr 1fr; }
+      .pg, .wf-grid, .tg, .results-grid, .eg { grid-template-columns: 1fr; }
+      .iter-grid { grid-template-columns: 1fr; }
+      .strategy-flow { grid-template-columns: 1fr 1fr; }
+      .strategy-flow::before { display: none; }
+      .jw, .ig { grid-template-columns: 1fr; }
+      .jarr, .iarr { display: none; }
+      .spf-row { grid-template-columns: 80px 1fr; }
+      .journey-table { font-size: 12px; }
+      .bil-row { grid-template-columns: 1fr; }
+      .bil-cell:first-child { border-right: none; border-bottom: .5px solid var(--b); }
+    }
+  </style>
+</head>
+<body>
+<div class="cs">
+
+  <!-- ══════════════════════════════════
+       HERO
+  ══════════════════════════════════ -->
+  <div class="hero">
+    <div class="eyebrow">UX Case Study</div>
+    <h1>Navigating Indian Cities<br>Without the Anxiety</h1>
+    <p class="hero-sub">A public transport navigator built for the real chaos of DTC, BEST, and BMTC — where routes change, buses run late, and every commuter is one missed stop away from being lost.</p>
+    <div class="meta-row">
+      <div class="meta-item"><span class="ml">Role</span><span class="mv">UX Designer</span></div>
+      <div class="meta-item"><span class="ml">Duration</span><span class="mv">[Add Duration]</span></div>
+      <div class="meta-item"><span class="ml">Tools</span><span class="mv">Figma · FigJam</span></div>
+      <div class="meta-item"><span class="ml">Domain</span><span class="mv">Public Transport · Navigation</span></div>
+    </div>
+
+    <!-- HERO VISUAL: App mockup banner -->
+    <div class="hero-visual">
+      <svg viewBox="0 0 840 280" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+        <!-- bg -->
+        <rect width="840" height="280" fill="#F3F2EF"/>
+        <!-- decorative route line -->
+        <path d="M 60 200 Q 200 80 380 140 Q 520 190 660 100 L 780 80" stroke="#9FE1CB" stroke-width="2.5" fill="none" stroke-dasharray="6 4" opacity="0.6"/>
+        <!-- Phone 1: Home screen -->
+        <rect x="60" y="24" width="140" height="240" rx="14" fill="#FFFFFF" stroke="#E0DED8" stroke-width="1"/>
+        <rect x="72" y="38" width="116" height="16" rx="4" fill="#E1F5EE"/>
+        <rect x="80" y="40" width="60" height="8" rx="3" fill="#5DCAA5" opacity="0.7"/>
+        <rect x="72" y="64" width="116" height="36" rx="8" fill="#F3F2EF"/>
+        <rect x="80" y="72" width="40" height="6" rx="3" fill="#C8C7C2"/>
+        <rect x="80" y="82" width="70" height="6" rx="3" fill="#E0DED8"/>
+        <rect x="72" y="108" width="116" height="32" rx="6" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.8"/>
+        <rect x="80" y="114" width="55" height="6" rx="3" fill="#5DCAA5" opacity="0.8"/>
+        <rect x="80" y="124" width="80" height="5" rx="2.5" fill="#0F6E56" opacity="0.5"/>
+        <text x="164" y="130" font-size="8" fill="#1D9E75" font-weight="500" font-family="sans-serif">★ Best</text>
+        <rect x="72" y="148" width="116" height="28" rx="6" fill="#F8F8F6" stroke="#E0DED8" stroke-width="0.8"/>
+        <rect x="80" y="154" width="45" height="5" rx="2.5" fill="#B4B2A9"/>
+        <rect x="80" y="163" width="65" height="5" rx="2.5" fill="#C8C7C2"/>
+        <rect x="72" y="184" width="116" height="28" rx="6" fill="#F8F8F6" stroke="#E0DED8" stroke-width="0.8"/>
+        <rect x="80" y="190" width="45" height="5" rx="2.5" fill="#B4B2A9"/>
+        <rect x="80" y="199" width="65" height="5" rx="2.5" fill="#C8C7C2"/>
+        <text x="130" y="248" font-size="8" fill="#8A8A86" text-anchor="middle" font-family="sans-serif">Route Results</text>
+
+        <!-- Phone 2: Live tracking -->
+        <rect x="230" y="24" width="140" height="240" rx="14" fill="#FFFFFF" stroke="#E0DED8" stroke-width="1"/>
+        <rect x="230" y="24" width="140" height="130" rx="14" fill="#E8F4F0"/>
+        <rect x="230" y="114" width="140" height="40" fill="#E8F4F0"/>
+        <!-- map details -->
+        <path d="M 255 110 Q 285 70 330 85 Q 355 92 365 75" stroke="#5DCAA5" stroke-width="2" fill="none" opacity="0.7"/>
+        <circle cx="300" cy="88" r="7" fill="#0F6E56" stroke="white" stroke-width="2"/>
+        <circle cx="345" cy="80" r="5" fill="#EF9F27" stroke="white" stroke-width="2"/>
+        <rect x="315" y="55" width="50" height="16" rx="4" fill="white" opacity="0.9"/>
+        <text x="340" y="66" font-size="7.5" fill="#EF9F27" font-weight="600" text-anchor="middle" font-family="sans-serif">DTC 534</text>
+        <rect x="242" y="148" width="116" height="22" rx="5" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.8"/>
+        <text x="300" y="163" font-size="8" fill="#0F6E56" font-weight="500" text-anchor="middle" font-family="sans-serif">Arriving in 3 mins · Updated 10s ago</text>
+        <rect x="242" y="178" width="116" height="14" rx="4" fill="#F3F2EF"/>
+        <rect x="248" y="182" width="70" height="5" rx="2.5" fill="#C8C7C2"/>
+        <rect x="242" y="198" width="116" height="28" rx="6" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.8"/>
+        <text x="300" y="216" font-size="8" fill="#854F0B" text-anchor="middle" font-family="sans-serif">Running 8 mins late · Traffic near ITO</text>
+        <text x="300" y="248" font-size="8" fill="#8A8A86" text-anchor="middle" font-family="sans-serif">Live Tracking</text>
+
+        <!-- Phone 3: Journey guidance -->
+        <rect x="400" y="24" width="140" height="240" rx="14" fill="#FFFFFF" stroke="#E0DED8" stroke-width="1"/>
+        <rect x="412" y="38" width="116" height="30" rx="6" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.8"/>
+        <text x="470" y="52" font-size="8.5" fill="#0F6E56" font-weight="500" text-anchor="middle" font-family="sans-serif">You're on DTC 534</text>
+        <text x="470" y="63" font-size="8" fill="#1D9E75" text-anchor="middle" font-family="sans-serif">3 stops to AIIMS (एम्स)</text>
+        <!-- stop list -->
+        <rect x="412" y="78" width="116" height="18" rx="4" fill="#F3F2EF"/>
+        <circle cx="422" cy="87" r="4" fill="#9FE1CB"/>
+        <rect x="430" y="83" width="60" height="5" rx="2.5" fill="#C8C7C2"/>
+        <rect x="430" y="91" width="40" height="4" rx="2" fill="#E0DED8"/>
+        <rect x="412" y="100" width="116" height="18" rx="4" fill="#F3F2EF"/>
+        <circle cx="422" cy="109" r="4" fill="#9FE1CB"/>
+        <rect x="430" y="105" width="60" height="5" rx="2.5" fill="#C8C7C2"/>
+        <rect x="430" y="113" width="40" height="4" rx="2" fill="#E0DED8"/>
+        <!-- highlight: next stop -->
+        <rect x="412" y="122" width="116" height="22" rx="5" fill="#5DCAA5" opacity="0.2" stroke="#5DCAA5" stroke-width="1"/>
+        <circle cx="422" cy="133" r="5" fill="#0F6E56"/>
+        <text x="432" y="135" font-size="8.5" fill="#0F6E56" font-weight="500" font-family="sans-serif">AIIMS (एम्स) ← Your stop</text>
+        <!-- alert banner -->
+        <rect x="412" y="154" width="116" height="38" rx="7" fill="#0F6E56"/>
+        <text x="470" y="170" font-size="8.5" fill="white" font-weight="500" text-anchor="middle" font-family="sans-serif">Get ready — 2 stops left</text>
+        <text x="470" y="182" font-size="8" fill="#9FE1CB" text-anchor="middle" font-family="sans-serif">Get down at AIIMS (एम्स)</text>
+        <rect x="412" y="200" width="116" height="8" rx="4" fill="#F3F2EF"/>
+        <rect x="412" y="200" width="80" height="8" rx="4" fill="#5DCAA5" opacity="0.5"/>
+        <text x="470" y="248" font-size="8" fill="#8A8A86" text-anchor="middle" font-family="sans-serif">Journey Guidance</text>
+
+        <!-- Phone 4: Edge / missed bus -->
+        <rect x="570" y="24" width="140" height="240" rx="14" fill="#FFFFFF" stroke="#E0DED8" stroke-width="1"/>
+        <rect x="582" y="38" width="116" height="30" rx="6" fill="#FCEBEB" stroke="#F7C1C1" stroke-width="0.8"/>
+        <text x="640" y="52" font-size="8.5" fill="#A32D2D" font-weight="500" text-anchor="middle" font-family="sans-serif">You just missed DTC 534</text>
+        <text x="640" y="63" font-size="8" fill="#A32D2D" text-anchor="middle" font-family="sans-serif">Next one in 12 mins</text>
+        <rect x="582" y="78" width="116" height="40" rx="6" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.8"/>
+        <text x="640" y="93" font-size="8" fill="#854F0B" font-weight="500" text-anchor="middle" font-family="sans-serif">Alternative: DTC 318</text>
+        <text x="640" y="106" font-size="7.5" fill="#854F0B" text-anchor="middle" font-family="sans-serif">Arriving in 4 mins · 1 transfer</text>
+        <rect x="582" y="126" width="116" height="28" rx="6" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.8"/>
+        <text x="640" y="141" font-size="8" fill="#0F6E56" font-weight="500" text-anchor="middle" font-family="sans-serif">Walk to Kashmere Gate Stop</text>
+        <text x="640" y="151" font-size="7.5" fill="#1D9E75" text-anchor="middle" font-family="sans-serif">Gate 3, near Metro exit</text>
+        <rect x="582" y="162" width="116" height="18" rx="4" fill="#F3F2EF"/>
+        <rect x="590" y="167" width="70" height="5" rx="2.5" fill="#C8C7C2"/>
+        <rect x="582" y="185" width="116" height="18" rx="4" fill="#F3F2EF"/>
+        <rect x="590" y="190" width="55" height="5" rx="2.5" fill="#C8C7C2"/>
+        <text x="640" y="248" font-size="8" fill="#8A8A86" text-anchor="middle" font-family="sans-serif">Edge Case: Missed Bus</text>
+
+        <!-- labels -->
+        <text x="130" y="19" font-size="9" fill="#8A8A86" text-anchor="middle" font-family="sans-serif" font-weight="500">HOME</text>
+        <text x="300" y="19" font-size="9" fill="#8A8A86" text-anchor="middle" font-family="sans-serif" font-weight="500">LIVE TRACKING</text>
+        <text x="470" y="19" font-size="9" fill="#8A8A86" text-anchor="middle" font-family="sans-serif" font-weight="500">JOURNEY GUIDANCE</text>
+        <text x="640" y="19" font-size="9" fill="#8A8A86" text-anchor="middle" font-family="sans-serif" font-weight="500">EDGE CASE</text>
+      </svg>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       OVERVIEW
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Overview</p>
+    <div class="snap-grid">
+      <div class="sc"><p class="sl">Problem</p><p class="sv">Confusing, anxiety-inducing bus navigation</p></div>
+      <div class="sc"><p class="sl">Users</p><p class="sv">Daily commuters &amp; non-native city residents</p></div>
+      <div class="sc"><p class="sl">Goal</p><p class="sv">Confident, stress-free bus travel</p></div>
+      <div class="sc"><p class="sl">Outcome</p><p class="sv">Faster decisions, fewer wrong stops</p></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       CONTEXT
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Context</p>
+    <h2>The problem with Indian public transport isn't the buses — it's the information</h2>
+    <p class="body-text">Millions ride DTC, BEST, and BMTC every day. But for anyone who isn't a regular — a student who just moved cities, a professional commuting to a new office, a non-Hindi speaker navigating Delhi — each journey is a guessing game. No real-time boards at most stops. Buses don't announce stops clearly. Route maps are outdated. And nobody to ask except a conductor who can barely be heard over the engine. This app was designed to be that missing layer of clarity.</p>
+  </div>
+
+  <!-- ══════════════════════════════════
+       PROBLEM STATEMENT
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Problem statement</p>
+    <div class="hmw">
+      <p>"How might we help non-native commuters in Indian cities navigate government buses with confidence — so they can travel without fear of boarding the wrong bus, missing their stop, or being stranded mid-route?"</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       USER UNDERSTANDING
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">User understanding</p>
+    <h2>Users don't struggle with routes — they struggle with uncertainty in the moment</h2>
+    <p class="body-text">Through field observations at Kashmere Gate, Majestic, and Dadar — and interviews with 18 commuters — four core anxieties emerged.</p>
+    <div class="pain-grid">
+      <div class="pc"><div class="pt"></div>Is DTC 534 going towards Mehrauli or Anand Vihar?</div>
+      <div class="pc"><div class="pt"></div>Will I reach AIIMS before my appointment?</div>
+      <div class="pc"><div class="pt"></div>I can't read the board — is this my stop?</div>
+      <div class="pc"><div class="pt"></div>I missed the bus. Is there another one soon?</div>
+    </div>
+    <div class="uq">
+      <p>"I stood at ITO for 20 minutes not knowing if the bus I boarded was going the right way. I only realised at Daryaganj. I was already late."</p>
+      <p class="attr">— Software engineer, moved to Delhi 4 months ago</p>
+    </div>
+
+    <!-- Persona/Empathy map -->
+    <div class="diagram-wrap" style="margin-top:1.5rem;">
+      <div class="diagram-header">Empathy Snapshot — Priya, 24, New to Delhi</div>
+      <div class="diagram-body" style="padding: 1.25rem;">
+        <svg viewBox="0 0 780 200" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+          <!-- 4 quadrant cards -->
+          <!-- THINKS -->
+          <rect x="0" y="0" width="185" height="190" rx="8" fill="#F3F2EF" stroke="rgba(0,0,0,0.08)" stroke-width="0.8"/>
+          <text x="12" y="18" font-size="9" font-weight="600" fill="#8A8A86" font-family="sans-serif" letter-spacing="1">THINKS</text>
+          <rect x="10" y="24" width="165" height="1" fill="rgba(0,0,0,0.08)"/>
+          <text x="12" y="42" font-size="11" fill="#4A4A47" font-family="sans-serif">"Will my bus be late?"</text>
+          <text x="12" y="60" font-size="11" fill="#4A4A47" font-family="sans-serif">"Am I at the right stop?"</text>
+          <text x="12" y="78" font-size="11" fill="#4A4A47" font-family="sans-serif">"What if I miss AIIMS?"</text>
+          <text x="12" y="96" font-size="11" fill="#4A4A47" font-family="sans-serif">"Can I trust this app?"</text>
+
+          <!-- FEELS -->
+          <rect x="198" y="0" width="185" height="190" rx="8" fill="#FCEBEB" stroke="#F7C1C1" stroke-width="0.8"/>
+          <text x="210" y="18" font-size="9" font-weight="600" fill="#A32D2D" font-family="sans-serif" letter-spacing="1">FEELS</text>
+          <rect x="208" y="24" width="165" height="1" fill="rgba(163,45,45,0.15)"/>
+          <text x="210" y="42" font-size="11" fill="#4A4A47" font-family="sans-serif">Anxious at crowded stops</text>
+          <text x="210" y="60" font-size="11" fill="#4A4A47" font-family="sans-serif">Embarrassed asking strangers</text>
+          <text x="210" y="78" font-size="11" fill="#4A4A47" font-family="sans-serif">Relieved when guided clearly</text>
+          <text x="210" y="96" font-size="11" fill="#4A4A47" font-family="sans-serif">Stressed during delays</text>
+
+          <!-- DOES -->
+          <rect x="396" y="0" width="185" height="190" rx="8" fill="#F3F2EF" stroke="rgba(0,0,0,0.08)" stroke-width="0.8"/>
+          <text x="408" y="18" font-size="9" font-weight="600" fill="#8A8A86" font-family="sans-serif" letter-spacing="1">DOES</text>
+          <rect x="406" y="24" width="165" height="1" fill="rgba(0,0,0,0.08)"/>
+          <text x="408" y="42" font-size="11" fill="#4A4A47" font-family="sans-serif">Asks multiple people at stop</text>
+          <text x="408" y="60" font-size="11" fill="#4A4A47" font-family="sans-serif">Googles route mid-commute</text>
+          <text x="408" y="78" font-size="11" fill="#4A4A47" font-family="sans-serif">Boards bus hesitantly</text>
+          <text x="408" y="96" font-size="11" fill="#4A4A47" font-family="sans-serif">Exits early out of fear</text>
+
+          <!-- NEEDS -->
+          <rect x="594" y="0" width="186" height="190" rx="8" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.8"/>
+          <text x="606" y="18" font-size="9" font-weight="600" fill="#0F6E56" font-family="sans-serif" letter-spacing="1">NEEDS</text>
+          <rect x="604" y="24" width="166" height="1" fill="rgba(15,110,86,0.15)"/>
+          <text x="606" y="42" font-size="11" fill="#4A4A47" font-family="sans-serif">Clear bus direction label</text>
+          <text x="606" y="60" font-size="11" fill="#4A4A47" font-family="sans-serif">Live arrival ETA</text>
+          <text x="606" y="78" font-size="11" fill="#4A4A47" font-family="sans-serif">Stop countdown in-bus</text>
+          <text x="606" y="96" font-size="11" fill="#4A4A47" font-family="sans-serif">Bilingual stop names</text>
+        </svg>
+      </div>
+      <div class="diagram-caption">Priya commutes from Kashmere Gate to AIIMS 3x/week. She's been in Delhi 4 months and still isn't confident about routes.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       RESEARCH INSIGHTS
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Research insights</p>
+    <h2>What field research and data told us</h2>
+    <ul class="il">
+      <li class="ii"><span class="in">01</span>Certainty about direction matters more than journey speed — users take longer routes if they're sure it's correct</li>
+      <li class="ii"><span class="in">02</span>Live bus position reduces stop-line anxiety — even approximate ETAs change behaviour significantly</li>
+      <li class="ii"><span class="in">03</span>Too many route options cause paralysis — users abandon when shown 6+ routes with no guidance</li>
+      <li class="ii"><span class="in">04</span>Language is a barrier — non-Hindi speakers struggle with stop names written only in Devanagari</li>
+      <li class="ii"><span class="in">05</span>Missed bus is the most distressing state — no fallback means users feel completely helpless</li>
+    </ul>
+
+    <!-- Affinity map -->
+    <div class="diagram-wrap">
+      <div class="diagram-header">Research Board — Affinity Clusters</div>
+      <div class="diagram-body">
+        <svg viewBox="0 0 780 170" xmlns="http://www.w3.org/2000/svg" style="width:100%;display:block;">
+          <!-- Cluster 1: Direction -->
+          <rect x="0" y="0" width="148" height="160" rx="8" fill="#FCEBEB" stroke="#F7C1C1" stroke-width="0.8"/>
+          <text x="10" y="18" font-size="9" font-weight="600" fill="#A32D2D" font-family="sans-serif" letter-spacing="0.8">DIRECTION ANXIETY</text>
+          <rect x="8" y="26" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="14" y="41" font-size="10" fill="#4A4A47" font-family="sans-serif">"Which side of the road?"</text>
+          <rect x="8" y="52" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="14" y="67" font-size="10" fill="#4A4A47" font-family="sans-serif">"Towards Mehrauli or ISBT?"</text>
+          <rect x="8" y="78" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="14" y="93" font-size="10" fill="#4A4A47" font-family="sans-serif">"Boarded wrong way twice"</text>
+          <rect x="8" y="104" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="14" y="119" font-size="10" fill="#4A4A47" font-family="sans-serif">"No signs at the stop"</text>
+
+          <!-- Cluster 2: Information overload -->
+          <rect x="160" y="0" width="148" height="160" rx="8" fill="#FAEEDA" stroke="#FAC775" stroke-width="0.8"/>
+          <text x="170" y="18" font-size="9" font-weight="600" fill="#854F0B" font-family="sans-serif" letter-spacing="0.8">OVERLOAD</text>
+          <rect x="168" y="26" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="174" y="41" font-size="10" fill="#4A4A47" font-family="sans-serif">"Too many bus numbers"</text>
+          <rect x="168" y="52" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="174" y="67" font-size="10" fill="#4A4A47" font-family="sans-serif">"318, 318A, 318EXT?"</text>
+          <rect x="168" y="78" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="174" y="93" font-size="10" fill="#4A4A47" font-family="sans-serif">"Gave up and took auto"</text>
+          <rect x="168" y="104" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="174" y="119" font-size="10" fill="#4A4A47" font-family="sans-serif">"Just need 1 good route"</text>
+
+          <!-- Cluster 3: Live updates -->
+          <rect x="320" y="0" width="148" height="160" rx="8" fill="#E1F5EE" stroke="#9FE1CB" stroke-width="0.8"/>
+          <text x="330" y="18" font-size="9" font-weight="600" fill="#0F6E56" font-family="sans-serif" letter-spacing="0.8">LIVE AWARENESS</text>
+          <rect x="328" y="26" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="334" y="41" font-size="10" fill="#4A4A47" font-family="sans-serif">"Is the bus even running?"</text>
+          <rect x="328" y="52" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="334" y="67" font-size="10" fill="#4A4A47" font-family="sans-serif">"Traffic jam near ITO"</text>
+          <rect x="328" y="78" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="334" y="93" font-size="10" fill="#4A4A47" font-family="sans-serif">"Waited 25 min, no bus"</text>
+          <rect x="328" y="104" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="334" y="119" font-size="10" fill="#4A4A47" font-family="sans-serif">"App showed wrong time"</text>
+
+          <!-- Cluster 4: Language -->
+          <rect x="480" y="0" width="148" height="160" rx="8" fill="#F3F2EF" stroke="rgba(0,0,0,0.10)" stroke-width="0.8"/>
+          <text x="490" y="18" font-size="9" font-weight="600" fill="#4A4A47" font-family="sans-serif" letter-spacing="0.8">LANGUAGE GAP</text>
+          <rect x="488" y="26" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="494" y="41" font-size="10" fill="#4A4A47" font-family="sans-serif">"Can't read Hindi boards"</text>
+          <rect x="488" y="52" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="494" y="67" font-size="10" fill="#4A4A47" font-family="sans-serif">"Stop name only in script"</text>
+          <rect x="488" y="78" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="494" y="93" font-size="10" fill="#4A4A47" font-family="sans-serif">"No English translation"</text>
+          <rect x="488" y="104" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="494" y="119" font-size="10" fill="#4A4A47" font-family="sans-serif">"Needs bilingual labels"</text>
+
+          <!-- Cluster 5: Missed -->
+          <rect x="632" y="0" width="148" height="160" rx="8" fill="#F3F2EF" stroke="rgba(0,0,0,0.10)" stroke-width="0.8"/>
+          <text x="642" y="18" font-size="9" font-weight="600" fill="#4A4A47" font-family="sans-serif" letter-spacing="0.8">FALLBACK NEED</text>
+          <rect x="640" y="26" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="646" y="41" font-size="10" fill="#4A4A47" font-family="sans-serif">"Missed it, what next?"</text>
+          <rect x="640" y="52" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="646" y="67" font-size="10" fill="#4A4A47" font-family="sans-serif">"No info after missing"</text>
+          <rect x="640" y="78" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="646" y="93" font-size="10" fill="#4A4A47" font-family="sans-serif">"Felt completely stranded"</text>
+          <rect x="640" y="104" width="132" height="22" rx="4" fill="white" opacity="0.7"/>
+          <text x="646" y="119" font-size="10" fill="#4A4A47" font-family="sans-serif">"App should auto-reroute"</text>
+        </svg>
+      </div>
+      <div class="diagram-caption">5 clusters surfaced from 18 interviews across Delhi, Mumbai, and Bangalore. Each cluster maps to a direct design decision.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       DEFINE
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Define</p>
+    <div class="def">
+      <p>Users don't need more information.<br>They need <span>the right information, at the right moment,</span><br>in a language they understand.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       STRATEGY
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Strategy</p>
+    <h2>Three pillars that shaped every design decision</h2>
+    <div class="pg">
+      <div class="pcard">
+        <div class="pico"><svg viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5" stroke="#1D9E75" stroke-width="1.2"/><line x1="7" y1="4" x2="7" y2="7" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/><circle cx="7" cy="9" r="0.7" fill="#1D9E75"/></svg></div>
+        <p class="pn">Clarity</p>
+        <p class="pd">One recommended route, not six. Direction labels on every bus card. Reduce cognitive noise at every step.</p>
+      </div>
+      <div class="pcard">
+        <div class="pico"><svg viewBox="0 0 14 14" fill="none"><polyline points="2,8 5,5 8,7 12,3" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <p class="pn">Confidence</p>
+        <p class="pd">Live bus location, real ETAs with timestamps, and honest system states — even when things go wrong.</p>
+      </div>
+      <div class="pcard">
+        <div class="pico"><svg viewBox="0 0 14 14" fill="none"><path d="M3 3h8M3 7h5M3 11h7" stroke="#1D9E75" stroke-width="1.2" stroke-linecap="round"/></svg></div>
+        <p class="pn">Guidance</p>
+        <p class="pd">Step-by-step journey mode with boarding alerts, stop countdowns, and bilingual stop names throughout.</p>
+      </div>
+    </div>
+
+    <!-- STRATEGY FLOW DIAGRAM -->
+    <div class="diagram-wrap">
+      <div class="diagram-header">Design strategy — Reducing uncertainty at every step</div>
+      <div class="diagram-body">
+        <div class="strategy-flow">
+          <div class="sf-col">
+            <div class="sf-node n1">1</div>
+            <p class="sf-stage">Before Boarding</p>
+            <p class="sf-thought">"Which bus should I take?"</p>
+            <p class="sf-prob">Too many similar route options</p>
+            <p class="sf-fix">Highlight "Recommended Route" + reduce visible options to 2</p>
+          </div>
+          <div class="sf-col">
+            <div class="sf-node n2">2</div>
+            <p class="sf-stage">At Bus Stop</p>
+            <p class="sf-thought">"Is this my bus?"</p>
+            <p class="sf-prob">No clear bus identity or direction</p>
+            <p class="sf-fix">Live tracking + bus number + "Towards Mehrauli Terminal"</p>
+          </div>
+          <div class="sf-col">
+            <div class="sf-node n3">3</div>
+            <p class="sf-stage">On the Bus</p>
+            <p class="sf-thought">"When do I get down?"</p>
+            <p class="sf-prob">No stop awareness or countdown</p>
+            <p class="sf-fix">Step-by-step guidance + "Next stop: AIIMS (एम्स)"</p>
+          </div>
+          <div class="sf-col">
+            <div class="sf-node n4">4</div>
+            <p class="sf-stage">If Something Goes Wrong</p>
+            <p class="sf-thought">"What now?"</p>
+            <p class="sf-prob">No fallback or recovery support</p>
+            <p class="sf-fix">Missed bus alerts + next bus ETA + reroute option</p>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-caption">"This strategy focuses on reducing uncertainty across key decision moments — not just the happy path."</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       USER JOURNEY
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">User journey</p>
+    <h2>Real journey: Anand Vihar ISBT → AIIMS (first-time user)</h2>
+    <p class="body-text" style="margin-bottom: 1.25rem;">Focused on real commuter anxiety, not ideal journeys.</p>
+
+    <div class="diagram-wrap">
+      <div class="diagram-header">Journey Map — Priya's first solo commute</div>
+      <div class="diagram-body" style="padding: 0;">
+        <table class="journey-table">
+          <thead>
+            <tr>
+              <th style="padding-left:1rem;">Stage</th>
+              <th>User thought</th>
+              <th>Pain point</th>
+              <th style="padding-right:1rem;">Design solution</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding-left:1rem;">
+                <p class="jt-stage">Search</p>
+                <p class="jt-sub">Home screen</p>
+              </td>
+              <td><p class="jt-thought">"Which bus goes to AIIMS from here?"</p></td>
+              <td><p class="jt-pain">Too many similar results — DTC 534, 318, 423, 502...</p></td>
+              <td style="padding-right:1rem;"><p class="jt-fix">Recommended route card: DTC 534 · Arriving in 4 mins · Direct · No transfers</p></td>
+            </tr>
+            <tr>
+              <td style="padding-left:1rem;">
+                <p class="jt-stage">At Stop</p>
+                <p class="jt-sub">Live Tracking</p>
+              </td>
+              <td><p class="jt-thought">"Is this the 534? Is it going the right way?"</p></td>
+              <td><p class="jt-pain">Bus arrived but no direction confirmation visible</p></td>
+              <td style="padding-right:1rem;"><p class="jt-fix">Live card: "DTC 534 — Towards Mehrauli Terminal · Arriving now" with map pin</p></td>
+            </tr>
+            <tr>
+              <td style="padding-left:1rem;">
+                <p class="jt-stage">On Bus</p>
+                <p class="jt-sub">Journey Guidance</p>
+              </td>
+              <td><p class="jt-thought">"Did I already miss AIIMS?"</p></td>
+              <td><p class="jt-pain">No stop awareness. Missed the announcement. Anxiety builds.</p></td>
+              <td style="padding-right:1rem;"><p class="jt-fix">Persistent banner: "3 stops to AIIMS (एम्स)" — updates live. Vibration at 2 stops.</p></td>
+            </tr>
+            <tr>
+              <td style="padding-left:1rem;">
+                <p class="jt-stage">Before Drop</p>
+                <p class="jt-sub">Journey Guidance</p>
+              </td>
+              <td><p class="jt-thought">"When exactly do I get down?"</p></td>
+              <td><p class="jt-pain">Uncertainty at the last moment — no clear cue</p></td>
+              <td style="padding-right:1rem;"><p class="jt-fix">Full-screen alert: "Get ready — 2 stops left · Get down at AIIMS (एम्स)"</p></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="diagram-caption">Each stage maps a real moment of doubt to a specific interface decision.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       WIREFRAMES
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Wireframes</p>
+    <h2>Layouts built around one question: what does the user need right now?</h2>
+    <p class="body-text">Early wireframes tested information hierarchy at each stage — how much context users need before searching, before boarding, and while riding. The biggest tension: enough information without triggering paralysis.</p>
+
+    <div class="diagram-wrap">
+      <div class="diagram-header">4-Screen Wireframe Grid</div>
+      <div class="diagram-body">
+        <div class="wf-grid">
+
+          <!-- Home screen -->
+          <div class="wf-card">
+            <div class="wf-screen">
+              <span class="wf-label">Home</span>
+              <!-- Status bar mock -->
+              <div class="wf-row"><div class="wf-bar sm" style="height:6px;"></div><div class="wf-bar" style="width:20%;height:6px;margin-left:auto;"></div></div>
+              <!-- Search bar -->
+              <div style="background:white;border-radius:8px;border:.5px solid rgba(0,0,0,0.12);padding:8px 10px;display:flex;align-items:center;gap:6px;">
+                <div style="width:10px;height:10px;border-radius:50%;border:1.5px solid #5DCAA5;flex-shrink:0;"></div>
+                <div class="wf-bar md" style="height:7px;flex:1;"></div>
+              </div>
+              <!-- Nearby label -->
+              <div class="wf-row"><div class="wf-bar" style="width:80px;height:6px;"></div></div>
+              <!-- Bus cards -->
+              <div style="background:white;border-radius:6px;border:1px solid #5DCAA5;padding:8px;">
+                <div class="wf-row" style="margin-bottom:5px;">
+                  <div style="background:#E1F5EE;border-radius:4px;padding:2px 6px;font-size:9px;color:#0F6E56;font-weight:600;font-family:sans-serif;">★ Recommended</div>
+                </div>
+                <div class="wf-bar lg" style="height:7px;margin-bottom:4px;"></div>
+                <div class="wf-bar md" style="height:6px;"></div>
+              </div>
+              <div style="background:white;border-radius:6px;border:.5px solid rgba(0,0,0,0.1);padding:8px;opacity:.6;">
+                <div class="wf-bar lg" style="height:7px;margin-bottom:4px;"></div>
+                <div class="wf-bar sm" style="height:6px;"></div>
+              </div>
+              <div style="font-size:10px;color:#5DCAA5;font-family:sans-serif;text-align:center;">+ View more routes</div>
+            </div>
+            <div class="wf-footer">
+              <p class="wf-annot"><span>Search-first layout.</span> Nearby buses prioritized. Recommended route always first.</p>
+            </div>
+          </div>
+
+          <!-- Route Results -->
+          <div class="wf-card">
+            <div class="wf-screen">
+              <span class="wf-label">Route Results</span>
+              <div class="wf-bar sm" style="height:6px;"></div>
+              <!-- top recommended card -->
+              <div style="background:#E1F5EE;border-radius:8px;border:1px solid #9FE1CB;padding:10px;">
+                <div style="font-size:9px;font-weight:600;color:#0F6E56;font-family:sans-serif;margin-bottom:4px;">DTC 534 · Towards Mehrauli Terminal</div>
+                <div style="display:flex;gap:6px;align-items:center;">
+                  <div style="background:#0F6E56;border-radius:3px;padding:2px 6px;font-size:8px;color:white;font-family:sans-serif;">Direct</div>
+                  <div style="background:#0F6E56;border-radius:3px;padding:2px 6px;font-size:8px;color:white;font-family:sans-serif;">No transfers</div>
+                </div>
+                <div style="margin-top:6px;font-size:10px;color:#1D9E75;font-family:sans-serif;font-weight:500;">Arriving in 4 mins</div>
+              </div>
+              <!-- divider -->
+              <div style="display:flex;align-items:center;gap:6px;"><div style="flex:1;height:.5px;background:rgba(0,0,0,0.1);"></div><div style="font-size:9px;color:#8A8A86;font-family:sans-serif;">Other options</div><div style="flex:1;height:.5px;background:rgba(0,0,0,0.1);"></div></div>
+              <div style="background:white;border-radius:6px;border:.5px solid rgba(0,0,0,0.1);padding:8px;opacity:.65;">
+                <div class="wf-bar lg" style="height:7px;margin-bottom:4px;"></div>
+                <div class="wf-bar md" style="height:6px;"></div>
+              </div>
+            </div>
+            <div class="wf-footer">
+              <p class="wf-annot"><span>Reduced 6 options → 2 + expand.</span> Recommended route highlighted in teal.</p>
+            </div>
+          </div>
+
+          <!-- Live Tracking -->
+          <div class="wf-card">
+            <div class="wf-screen">
+              <span class="wf-label">Live Tracking</span>
+              <div class="wf-map" style="height:130px;">
+                <div class="wf-map-line"></div>
+                <div class="wf-map-dot user"></div>
+                <div class="wf-map-dot bus"></div>
+                <!-- user label -->
+                <div style="position:absolute;left:27%;top:32%;background:white;border-radius:4px;padding:2px 5px;font-size:8px;color:#0F6E56;border:.5px solid #9FE1CB;font-family:sans-serif;">You</div>
+                <!-- bus label -->
+                <div style="position:absolute;right:25%;bottom:25%;background:#EF9F27;border-radius:4px;padding:2px 5px;font-size:8px;color:white;font-family:sans-serif;">534</div>
+              </div>
+              <div class="wf-banner">
+                <div class="wf-banner-dot"></div>
+                <span class="wf-banner-text">Arriving in 3 mins · Updated 10s ago</span>
+              </div>
+              <div style="background:#FAEEDA;border-radius:6px;padding:6px 9px;border:.5px solid #FAC775;">
+                <div style="font-size:10px;color:#854F0B;font-family:sans-serif;">Running 8 mins late · Traffic near ITO</div>
+              </div>
+            </div>
+            <div class="wf-footer">
+              <p class="wf-annot"><span>Map-first UI.</span> Bus and user clearly distinguished by colour. Live state shown.</p>
+            </div>
+          </div>
+
+          <!-- Journey Guidance -->
+          <div class="wf-card">
+            <div class="wf-screen">
+              <span class="wf-label">Journey Guidance</span>
+              <!-- persistent top banner -->
+              <div class="wf-banner">
+                <div class="wf-banner-dot"></div>
+                <div>
+                  <div class="wf-banner-text" style="font-weight:500;">You're on DTC 534</div>
+                  <div style="font-size:10px;color:#1D9E75;font-family:sans-serif;">3 stops to AIIMS (एम्स)</div>
+                </div>
+              </div>
+              <!-- progress bar -->
+              <div>
+                <div style="display:flex;justify-content:space-between;margin-bottom:4px;"><span style="font-size:9px;color:#8A8A86;font-family:sans-serif;">Anand Vihar</span><span style="font-size:9px;color:#0F6E56;font-family:sans-serif;">AIIMS</span></div>
+                <div class="wf-progress"><div class="wf-progress-fill" style="width:65%;"></div></div>
+              </div>
+              <!-- stop list -->
+              <div style="display:flex;flex-direction:column;gap:4px;">
+                <div style="display:flex;align-items:center;gap:8px;opacity:.5;"><div style="width:7px;height:7px;border-radius:50%;background:#9FE1CB;flex-shrink:0;"></div><div class="wf-bar md" style="height:6px;"></div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><div style="width:9px;height:9px;border-radius:50%;background:#5DCAA5;flex-shrink:0;border:2px solid #0F6E56;"></div><div style="font-size:10px;font-weight:500;color:#0F6E56;font-family:sans-serif;">Kashmere Gate (coming up)</div></div>
+                <div style="display:flex;align-items:center;gap:8px;"><div style="width:9px;height:9px;border-radius:50%;background:#0F6E56;flex-shrink:0;"></div><div style="font-size:10px;font-weight:600;color:#0F6E56;font-family:sans-serif;">AIIMS (एम्स) ← Your stop</div></div>
+              </div>
+              <!-- alert -->
+              <div style="background:#0F6E56;border-radius:8px;padding:8px 10px;text-align:center;">
+                <div style="font-size:10px;color:white;font-weight:600;font-family:sans-serif;">Get ready — 2 stops left</div>
+              </div>
+            </div>
+            <div class="wf-footer">
+              <p class="wf-annot"><span>Next stop always visible.</span> Alert fires 2 stops early. Low cognitive load design.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="diagram-caption">Each screen answers exactly one question the user has at that moment. Nothing more.</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       NON-NATIVE SUPPORT
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Non-native user support</p>
+    <h2>The app speaks your language — because a conductor might not</h2>
+    <p class="body-text">Bilingual stop names appear by default in Journey Mode — not buried in settings.</p>
+    <div class="bil">
+      <div class="bil-row">
+        <div class="bil-cell"><div class="bil-tag">English</div><div class="bil-line">Next Stop: Kashmere Gate</div></div>
+        <div class="bil-cell"><div class="bil-tag">Hindi</div><div class="bil-line">अगला स्टॉप: कश्मीरी गेट</div></div>
+      </div>
+      <div class="bil-row">
+        <div class="bil-cell"><div class="bil-tag">English</div><div class="bil-line">Get ready — your stop is in 2 stops</div></div>
+        <div class="bil-cell"><div class="bil-tag">Hindi</div><div class="bil-line">तैयार रहें — 2 स्टॉप बाद है</div></div>
+      </div>
+      <div class="bil-row">
+        <div class="bil-cell"><div class="bil-tag">English</div><div class="bil-line">Get down now — AIIMS</div></div>
+        <div class="bil-cell"><div class="bil-tag">Hindi</div><div class="bil-line">अभी उतरें — एम्स</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       MICROCOPY
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Microcopy</p>
+    <h2>Words that reduce anxiety — not add to it</h2>
+    <table class="mc-table">
+      <thead><tr><th>Before (robotic)</th><th>After (human)</th></tr></thead>
+      <tbody>
+        <tr><td>Tracking</td><td>Tracking your bus in real time</td></tr>
+        <tr><td>No routes found</td><td>No direct buses found — try nearby stops or routes</td></tr>
+        <tr><td>Get down in 2 stops</td><td>Get ready — your stop is in 2 stops</td></tr>
+        <tr><td>Bus delayed</td><td>Running 8 mins late — heavy traffic near ITO</td></tr>
+        <tr><td>Missed bus</td><td>You just missed this one. Next DTC 534 in 12 mins</td></tr>
+        <tr><td>Arrived</td><td>You're here. Welcome to AIIMS</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ══════════════════════════════════
+       USABILITY TESTING
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Usability testing</p>
+    <h2>Tested in the field — not just in a lab</h2>
+    <p class="body-text">Testing at Kashmere Gate ISBT (Delhi), Majestic Bus Stand (Bangalore), and Dadar TT Circle (Mumbai) with 12 participants — 6 of whom were new to the city.</p>
+    <div class="tg">
+      <div class="tc">
+        <p class="tl-label">Tested for</p>
+        <div class="ti"><div class="td2"></div>Route selection speed</div>
+        <div class="ti"><div class="td2"></div>ETA readability in sunlight</div>
+        <div class="ti"><div class="td2"></div>Stop alert timing accuracy</div>
+        <div class="ti"><div class="td2"></div>Edge case discoverability</div>
+      </div>
+      <div class="tc">
+        <p class="tl-label">Changes made</p>
+        <div class="ti"><div class="td2 g"></div>Reduced visible routes from 6 to 2 + "View more"</div>
+        <div class="ti"><div class="td2 g"></div>Increased ETA size for outdoor readability</div>
+        <div class="ti"><div class="td2 g"></div>Moved "Get ready" alert to 2 stops before</div>
+        <div class="ti"><div class="td2 g"></div>Redesigned missed bus flow entirely</div>
+      </div>
+    </div>
+
+    <!-- Results block -->
+    <div style="margin-top:1.5rem;">
+      <p style="font-size:10px;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:#8A8A86;margin-bottom:.75rem;">Results</p>
+      <div class="results-grid">
+        <div class="result-card">
+          <p class="result-num">18s → 7s</p>
+          <p class="result-label">Route selection time reduced from ~18 seconds to ~7 seconds</p>
+        </div>
+        <div class="result-card">
+          <p class="result-num">5 / 6</p>
+          <p class="result-label">New users boarded correct bus (up from 2/6 before redesign)</p>
+        </div>
+        <div class="result-card">
+          <p class="result-num">3 → 0</p>
+          <p class="result-label">Missed stops reduced from 3 to 0 in the final test round</p>
+        </div>
+        <div class="result-card">
+          <p class="result-num">↑ Conf.</p>
+          <p class="result-label">Users reported feeling significantly more confident during travel</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ITERATION PROGRESSION -->
+    <div class="diagram-wrap" style="margin-top:1.5rem;">
+      <div class="diagram-header">Iteration progression</div>
+      <div class="diagram-body" style="padding:0;">
+        <div class="iter-grid">
+          <div class="iter-col">
+            <span class="iter-badge v1">Iteration 1</span>
+            <div class="iter-item"><div class="iter-dot red"></div>Cluttered route list — 6+ options shown</div>
+            <div class="iter-item"><div class="iter-dot red"></div>Small ETA text — unreadable outdoors</div>
+            <div class="iter-item"><div class="iter-dot red"></div>No in-bus guidance or stop alerts</div>
+            <div class="iter-item"><div class="iter-dot red"></div>No fallback for missed bus</div>
+          </div>
+          <div class="iter-col">
+            <span class="iter-badge v2">Iteration 2</span>
+            <div class="iter-item"><div class="iter-dot amber"></div>Reduced to 3 options — still unclear priority</div>
+            <div class="iter-item"><div class="iter-dot amber"></div>Improved hierarchy — ETA more prominent</div>
+            <div class="iter-item"><div class="iter-dot amber"></div>Basic alerts added — too late (1 stop before)</div>
+            <div class="iter-item"><div class="iter-dot amber"></div>Missed bus shown but no next option</div>
+          </div>
+          <div class="iter-col final">
+            <span class="iter-badge vf">Final</span>
+            <div class="iter-item"><div class="iter-dot green"></div>Clear recommended route — 1 highlighted + expand</div>
+            <div class="iter-item"><div class="iter-dot green"></div>Strong visual hierarchy — ETA dominant</div>
+            <div class="iter-item"><div class="iter-dot green"></div>Full journey guidance — alert fires 2 stops early</div>
+            <div class="iter-item"><div class="iter-dot green"></div>Missed bus shows next bus + reroute option</div>
+          </div>
+        </div>
+      </div>
+      <div class="diagram-caption">"Each iteration reduced decision-making effort — and the number of wrong stops."</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       FIXING REAL USER FRICTION
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Screen-level friction fixes</p>
+    <h2>Fixing real user friction in the experience</h2>
+
+    <div class="spf">
+      <div class="spf-h"><span class="spf-tag">Route Results</span><span class="spf-name">Choosing the right route is confusing</span></div>
+      <div class="spf-body">
+        <div class="spf-row"><span class="spf-k">Before</span><span class="spf-v">Multiple similar routes (DTC 318, 318A, 534, 502...) with no prioritization. Users freeze and guess.</span></div>
+        <div class="spf-row"><span class="spf-k">After</span><span class="spf-v fix"><strong>Highlighted "Recommended Route — DTC 534 · Towards Mehrauli · Arriving in 4 mins · Direct"</strong> pinned at top. Others collapsed.</span></div>
+        <div class="spf-row"><span class="spf-k">Outcome</span><span class="spf-v res">Users select routes faster with less hesitation. Selection time dropped from 18s to 7s.</span></div>
+      </div>
+    </div>
+
+    <div class="spf">
+      <div class="spf-h"><span class="spf-tag">Live Tracking</span><span class="spf-name">Wrong bus anxiety</span></div>
+      <div class="spf-body">
+        <div class="spf-row"><span class="spf-k">Before</span><span class="spf-v">Bus arrived but no direction label. Users stood at wrong side of road and missed the bus.</span></div>
+        <div class="spf-row"><span class="spf-k">After</span><span class="spf-v fix"><strong>"DTC 534 — Towards Mehrauli Terminal"</strong> shown clearly on live card with approach direction on map. Board at: <strong>Kashmere Gate, Gate 3.</strong></span></div>
+        <div class="spf-row"><span class="spf-k">Outcome</span><span class="spf-v res">5 of 6 new users boarded correct bus in final test (up from 2/6).</span></div>
+      </div>
+    </div>
+
+    <div class="spf">
+      <div class="spf-h"><span class="spf-tag">Journey Guidance</span><span class="spf-name">Missed stop</span></div>
+      <div class="spf-body">
+        <div class="spf-row"><span class="spf-k">Before</span><span class="spf-v">Stop list visible but no proactive alert. Users missed stops because they weren't watching the screen.</span></div>
+        <div class="spf-row"><span class="spf-k">After</span><span class="spf-v fix">Haptic + visual alert fires <strong>2 stops before destination</strong>: <em>"Get ready — your stop is in 2 stops."</em> Full-screen alert at next stop: <em>"Get down now — AIIMS (एम्स)."</em></span></div>
+        <div class="spf-row"><span class="spf-k">Outcome</span><span class="spf-v res">Missed stops dropped from 3 to 0 in the final test round.</span></div>
+      </div>
+    </div>
+
+    <div class="spf">
+      <div class="spf-h"><span class="spf-tag">UI Simplification</span><span class="spf-name">Non-native user confusion</span></div>
+      <div class="spf-body">
+        <div class="spf-row"><span class="spf-k">Before</span><span class="spf-v">Stop names only in Hindi/Devanagari. Non-Hindi speakers couldn't confirm their stop. Icons absent.</span></div>
+        <div class="spf-row"><span class="spf-k">After</span><span class="spf-v fix">Bilingual labels default in Journey Mode: <strong>"AIIMS (एम्स)"</strong>. Icon-led UI — bus, stop, alert icons accompany every key action.</span></div>
+        <div class="spf-row"><span class="spf-k">Outcome</span><span class="spf-v res">Non-Hindi speakers navigated confidently without needing to ask anyone at the stop.</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       EDGE CASES
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Edge cases</p>
+    <h2>Designing for real-world scenarios</h2>
+    <p class="body-text">Real commuting doesn't follow the happy path. These four scenarios were designed explicitly — not treated as afterthoughts.</p>
+    <div class="eg" style="margin-top:1.1rem;">
+      <div class="ecard">
+        <div class="etitle"><div class="edot r"></div>Missed bus</div>
+        <div class="estate r">Bus missed</div>
+        <p class="edesc">User was still walking when DTC 534 departed from Kashmere Gate.</p>
+        <p class="efix">→ "You missed this bus. Next DTC 534 in 12 mins from the same stop." Option to reroute via DTC 318.</p>
+      </div>
+      <div class="ecard">
+        <div class="etitle"><div class="edot r"></div>Wrong direction</div>
+        <div class="estate r">Off-route</div>
+        <p class="edesc">User boarded towards Anand Vihar instead of Mehrauli. Journey Mode detects the mismatch.</p>
+        <p class="efix">→ "This bus is going the opposite way. Get off at next stop and catch DTC 318 from the other side."</p>
+      </div>
+      <div class="ecard">
+        <div class="etitle"><div class="edot n"></div>No internet</div>
+        <div class="estate n">Offline mode</div>
+        <p class="edesc">User enters a tunnel or low-coverage zone mid-journey.</p>
+        <p class="efix">→ "You're offline — showing last known routes." Cached journey continues. Live tracking resumes when signal returns.</p>
+      </div>
+      <div class="ecard">
+        <div class="etitle"><div class="edot n"></div>Location drift</div>
+        <div class="estate n">Off-route user</div>
+        <p class="edesc">User's GPS drifts or they walked away from their planned route.</p>
+        <p class="efix">→ "Looks like you moved — want to update your route from here?" Re-anchors without interrupting the journey.</p>
+      </div>
+    </div>
+    <p style="font-size:13px;font-weight:300;color:var(--t3);margin-top:1rem;font-style:italic;">"Designed for real-world uncertainty, not ideal conditions."</p>
+  </div>
+
+  <!-- ══════════════════════════════════
+       IMPACT
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Impact</p>
+    <h2>A measurable shift in how users experience public transport</h2>
+    <div class="ig">
+      <div class="ic">
+        <div class="iitem">High confusion at route selection</div>
+        <div class="iitem">Boarding wrong bus or direction</div>
+        <div class="iitem">Missing stops due to distraction</div>
+        <div class="iitem">Distrust of ETA accuracy</div>
+        <div class="iitem">Feeling stranded when plans fail</div>
+      </div>
+      <div class="iarr">&#8594;</div>
+      <div class="ic">
+        <div class="iitem pos">Confident decision in &lt;8 seconds</div>
+        <div class="iitem pos">Direction confirmed before boarding</div>
+        <div class="iitem pos">Proactive alerts — 2 stops early</div>
+        <div class="iitem pos">Timestamped ETAs users trust</div>
+        <div class="iitem pos">Clear fallback options always shown</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════
+       LEARNINGS
+  ══════════════════════════════════ -->
+  <div class="sec">
+    <p class="eyebrow">Learnings</p>
+    <h2>What this project taught me</h2>
+    <div class="ll">
+      <div class="li">Designing for messy, real-world conditions is harder than designing for ideal use cases — and more important.</div>
+      <div class="li">Simplicity isn't removing features. It's making the right feature impossible to miss.</div>
+      <div class="li">Microcopy is UX. "Running 8 mins late near ITO" builds more trust than "Bus delayed" ever could.</div>
+      <div class="li">Edge cases are just overlooked users. Designing for missed buses and offline states is designing for dignity.</div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>Thanks for reading. <strong>Open to UX / Product Design opportunities.</strong></p>
+  </div>
+
+</div>
+</body>
+</html>
